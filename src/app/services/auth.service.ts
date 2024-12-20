@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 export interface User {
   id?: number;
   username: string;
-  password?: string;
+  password: string;
   token?: string;
 }
 
@@ -16,36 +15,72 @@ export interface User {
 export class AuthService {
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
+  private users: User[] = [];
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User | null>(
       JSON.parse(localStorage.getItem('currentUser') || 'null')
     );
     this.currentUser = this.currentUserSubject.asObservable();
+    
+    // Charger les utilisateurs existants du localStorage
+    const savedUsers = localStorage.getItem('users');
+    this.users = savedUsers ? JSON.parse(savedUsers) : [
+      { id: 1, username: 'admin', password: 'admin' } // Utilisateur par défaut
+    ];
   }
 
   public get currentUserValue(): User | null {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string) {
-    // Simulons une API - Dans un cas réel, remplacez ceci par un appel HTTP
+  register(username: string, password: string): Observable<any> {
     return new Observable(observer => {
-      setTimeout(() => {
-        if (username === 'admin' && password === 'admin') {
-          const user: User = {
-            id: 1,
-            username: username,
-            token: 'fake-jwt-token-' + Math.random()
-          };
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          observer.next(user);
-        } else {
-          observer.error('Username or password is incorrect');
-        }
-        observer.complete();
-      }, 500);
+      // Vérifier si l'utilisateur existe déjà
+      if (this.users.find(u => u.username === username)) {
+        observer.error('Nom d\'utilisateur déjà pris');
+        return;
+      }
+
+      // Créer un nouvel utilisateur
+      const newUser: User = {
+        id: this.users.length + 1,
+        username,
+        password
+      };
+
+      // Ajouter l'utilisateur à la liste
+      this.users.push(newUser);
+      
+      // Sauvegarder dans localStorage
+      localStorage.setItem('users', JSON.stringify(this.users));
+      
+      observer.next(newUser);
+      observer.complete();
+    });
+  }
+
+  login(username: string, password: string) {
+    return new Observable(observer => {
+      // Trouver l'utilisateur
+      const user = this.users.find(u => u.username === username && u.password === password);
+
+      if (user) {
+        // Créer une copie de l'utilisateur avec un token
+        const authenticatedUser = {
+          ...user,
+          token: 'jwt-token-' + Math.random()
+        };
+        
+        // Sauvegarder l'utilisateur connecté
+        localStorage.setItem('currentUser', JSON.stringify(authenticatedUser));
+        this.currentUserSubject.next(authenticatedUser);
+        
+        observer.next(authenticatedUser);
+      } else {
+        observer.error('Nom d\'utilisateur ou mot de passe incorrect');
+      }
+      observer.complete();
     });
   }
 
