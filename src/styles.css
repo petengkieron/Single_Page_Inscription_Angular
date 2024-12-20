@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.container {
+  padding: 20px;
+}
+
+.btn {
+  margin-top: 1rem;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+.navbar {
+  margin-bottom: 2rem;
+}

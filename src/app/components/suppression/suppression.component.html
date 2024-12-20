@@ -1,0 +1,25 @@
+<div class="container">
+  <h2>Suppression d'utilisateurs</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of utilisateurs; let i = index">
+        <td>{{ user.nom }}</td>
+        <td>{{ user.prenom }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.telephone }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="supprimerUtilisateur(i)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> 

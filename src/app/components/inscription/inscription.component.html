@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>Inscription</h2>
+  <form (ngSubmit)="onSubmit()" #inscriptionForm="ngForm">
+    <div class="form-group">
+      <label for="nom">Nom:</label>
+      <input type="text" id="nom" name="nom" [(ngModel)]="utilisateur.nom" required class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="prenom">Prénom:</label>
+      <input type="text" id="prenom" name="prenom" [(ngModel)]="utilisateur.prenom" required class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" [(ngModel)]="utilisateur.email" required class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="telephone">Téléphone:</label>
+      <input type="tel" id="telephone" name="telephone" [(ngModel)]="utilisateur.telephone" required class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">S'inscrire</button>
+  </form>
+</div> 

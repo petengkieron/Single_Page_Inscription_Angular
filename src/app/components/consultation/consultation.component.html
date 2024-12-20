@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>Liste des utilisateurs</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of utilisateurs">
+        <td>{{ user.nom }}</td>
+        <td>{{ user.prenom }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.telephone }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-primary" routerLink="/inscription">Nouvelle inscription</button>
+</div> 
