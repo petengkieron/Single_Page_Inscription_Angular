@@ -33,6 +33,7 @@ import { Router } from '@angular/router';
   `
 })
 export class AppComponent {
+  title = 'Single-Page';
   constructor(
     public authService: AuthService,
     private router: Router
